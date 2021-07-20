@@ -22,6 +22,14 @@ export interface IExpressHandler {
 
 /**
  * @export
+ * @interface IExpressMiddleware
+ */
+export interface IExpressMiddleware {
+  (req: any, res: any, next: any): any;
+}
+
+/**
+ * @export
  * @interface ParserOptions
  */
 export interface ParserOptions {
@@ -63,6 +71,7 @@ export class Endpoint {
     public name: string | undefined,
     public requestType: RequestType,
     public handler: IExpressHandler,
+    public middleware?: IExpressMiddleware[] | undefined,
     public options?: EndpointOptions,
   ) {
     if (!handler) {
@@ -71,33 +80,35 @@ export class Endpoint {
 
     this.name = name;
     this.handler = handler;
+    this.middleware = middleware;
     this.requestType = requestType;
     this.options = options;
   }
 }
 
 export class Get extends Endpoint {
-  constructor(handler: IExpressHandler, options?: EndpointOptions) {
-    super(undefined, RequestType.GET, handler, options);
+  constructor(handler: IExpressHandler, middleware?: IExpressMiddleware[], options?: EndpointOptions) {
+    super(undefined, RequestType.GET, handler, middleware, options);
   }
 }
+
 export class Post extends Endpoint {
-  constructor(handler: IExpressHandler, options?: EndpointOptions) {
-    super(undefined, RequestType.POST, handler, options);
+  constructor(handler: IExpressHandler, middleware?: IExpressMiddleware[], options?: EndpointOptions) {
+    super(undefined, RequestType.POST, handler, middleware, options);
   }
 }
 export class Put extends Endpoint {
-  constructor(handler: IExpressHandler, options?: EndpointOptions) {
-    super(undefined, RequestType.PUT, handler, options);
+  constructor(handler: IExpressHandler, middleware?: IExpressMiddleware[], options?: EndpointOptions) {
+    super(undefined, RequestType.PUT, handler, middleware, options);
   }
 }
 export class Delete extends Endpoint {
-  constructor(handler: IExpressHandler, options?: EndpointOptions) {
-    super(undefined, RequestType.DELETE, handler, options);
+  constructor(handler: IExpressHandler, middleware?: IExpressMiddleware[], options?: EndpointOptions) {
+    super(undefined, RequestType.DELETE, handler, middleware, options);
   }
 }
 export class Patch extends Endpoint {
-  constructor(handler: IExpressHandler, options?: EndpointOptions) {
-    super(undefined, RequestType.PATCH, handler, options);
+  constructor(handler: IExpressHandler, middleware?: IExpressMiddleware[], options?: EndpointOptions) {
+    super(undefined, RequestType.PATCH, handler, middleware, options);
   }
 }

@@ -186,6 +186,9 @@ export class FunctionParser {
 
     const { handler } = endpoint;
 
+    const { middleware } = endpoint;
+
+
     // Enable cors if it is enabled globally else only enable it for a particular route
     if (this.enableCors) {
       router.use(cors());
@@ -202,22 +205,47 @@ export class FunctionParser {
 
     switch (endpoint.requestType) {
       case RequestType.GET:
+        if (middleware) {
+          const mw = middleware;
+          router.get(`/${name}`, mw, handler);
+          break;
+        }
         router.get(`/${name}`, handler);
         break;
 
       case RequestType.POST:
+        if (middleware) {
+          const mw = middleware;
+          router.post(`/${name}`, mw, handler);
+          break;
+        }
         router.post(`/${name}`, handler);
         break;
 
       case RequestType.PUT:
+        if (middleware) {
+          const mw = middleware;
+          router.put(`/${name}`, mw, handler);
+          break;
+        }
         router.put(`/${name}`, handler);
         break;
 
       case RequestType.DELETE:
+        if (middleware) {
+          const mw = middleware;
+          router.delete(`/${name}`, mw, handler);
+          break;
+        }
         router.delete(`/${name}`, handler);
         break;
 
       case RequestType.PATCH:
+        if (middleware) {
+          const mw = middleware;
+          router.patch(`/${name}`, mw, handler);
+          break;
+        }
         router.patch(`/${name}`, handler);
         break;
 
