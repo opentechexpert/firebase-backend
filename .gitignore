@@ -6,3 +6,4 @@ dist
 *.tgz
 .eslintcache
 docs
+*api-firebase-adminsdk*
