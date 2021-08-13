@@ -52,13 +52,14 @@ export class FunctionParser {
     let groupByFolder: boolean = options?.groupByFolder ?? true;
     let buildReactive: boolean = options?.buildReactive ?? true;
     let buildEndpoints: boolean = options?.buildEndpoints ?? true;
+    let regional: string = options?.regional ?? '';
 
     if (buildReactive) {
       this.buildReactiveFunctions(groupByFolder);
     }
 
     if (buildEndpoints) {
-      this.buildRestfulApi(groupByFolder);
+      this.buildRestfulApi(groupByFolder, regional);
     }
   }
 
@@ -116,7 +117,7 @@ export class FunctionParser {
    * @param {boolean} groupByFolder
    * @memberof FunctionParser
    */
-  private buildRestfulApi(groupByFolder: boolean) {
+  private buildRestfulApi(groupByFolder: boolean, regional: string) {
     log('Restful Endpoints - Building...');
 
     const apiFiles: string[] = glob.sync(`${this.rootPath}/**/*.endpoint.js`, {
@@ -157,7 +158,8 @@ export class FunctionParser {
 
       this.exports[groupName] = {
         ...this.exports[groupName],
-        api: functions.https.onRequest(app),
+
+        api: regional == '' ? functions.https.onRequest(app) : functions.region(`${regional}`).https.onRequest(app),
       };
     });
 

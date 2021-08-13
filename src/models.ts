@@ -37,6 +37,7 @@ export interface ParserOptions {
   buildReactive?: boolean;
   buildEndpoints?: boolean;
   groupByFolder?: boolean;
+  regional?: string;
 }
 
 /**
